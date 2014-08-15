@@ -1528,6 +1528,15 @@ void thread_down(void) {
 			}
 			txpkt.rf_chain = (uint8_t)json_value_get_number(val);
 
+			if( lgw_freq_validate(0, txpkt.freq_hz) == 0 ){
+				txpkt.rf_chain = 0;
+			}else if( lgw_freq_validate(1, txpkt.freq_hz) == 0 ){
+				txpkt.rf_chain = 1;
+			}else{
+				MSG("Frequency unsuportee\n");
+			}
+			printf("\033[37;41;1mRF Chain %d selected\033[0m\n", txpkt.rf_chain);
+
 			/* parse TX power (optional field) */
 			val = json_object_get_value(txpk_obj,"powe");
 			if (val != NULL) {
